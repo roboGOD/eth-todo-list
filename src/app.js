@@ -71,11 +71,13 @@ App = {
   renderTasks: async () => {
     // Load the total task count from blockchain
     const taskCount = await App.todoList.taskCount();
+    console.log("Task Count: " + taskCount);
     const $taskTemplate = $('.taskTemplate');
 
-    const $newTaskTemplate = $taskTemplate.clone();
     // Render out each task with a new task template
     for(let i=1; i <= taskCount; i++) {
+      const $newTaskTemplate = $taskTemplate.clone();
+      
       const task = await App.todoList.tasks(i);
       const taskId = task[0].toNumber();
       const taskContent = task[1];
@@ -93,10 +95,18 @@ App = {
       } else {
         $('#taskList').append($newTaskTemplate);
       }
+      
+      // Show the task
+      $newTaskTemplate.show();
     }
+  },
 
-    // Show the task
-    $newTaskTemplate.show();
+  createTask: async () => {
+    App.setLoading(true);
+
+    const content = $("#newTask").val();
+    await App.todoList.createTask(content, {from: App.account});
+    window.location.reload();
   },
 
   setLoading: (isLoading) => {
