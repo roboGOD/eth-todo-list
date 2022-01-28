@@ -61,10 +61,11 @@ export default function TasksContextProvider({
 
   const createTask = useCallback(
     async (content: string) => {
-      console.log("Create Task", content);
       if (todoList != null) {
-        await todoList.methods.createTask(content).send({ from: account });
-        await fetchTasks();
+        todoList.methods.createTask(content).send({ from: account }).once('receipt', async (receipt: any) => {
+          console.log("Task Created", receipt);
+          await fetchTasks();
+        });
       } else {
         console.warn("TodoList smart contract not loaded yet.");
       }
