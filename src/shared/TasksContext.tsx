@@ -63,7 +63,7 @@ export default function TasksContextProvider({
     async (content: string) => {
       if (todoList != null) {
         todoList.methods.createTask(content).send({ from: account }).once('receipt', async (receipt: any) => {
-          console.log("Task Created", receipt);
+          console.log("Task Created");
           await fetchTasks();
         });
       } else {
