@@ -1,6 +1,8 @@
 import React, { useEffect, useMemo, useState } from "react";
 import Web3 from "web3";
+import { Contract } from 'web3-eth-contract';
 import { Window } from "../react-app-env";
+import { TODO_LIST_ABI, TODO_LIST_ADDRESS } from "./Config";
 
 declare var window: Window;
 
@@ -13,6 +15,8 @@ export interface Web3ContextValues {
   setAccount: (account: string) => void;
   networkType: string | null;
   setNetworkType: (network: string) => void;
+  todoList: Contract | null;
+  setTodoList: (contract: Contract) => void;
 }
 
 const web3ContextDefault: Web3ContextValues = {
@@ -24,6 +28,8 @@ const web3ContextDefault: Web3ContextValues = {
   setAccount: () => {},
   networkType: null,
   setNetworkType: () => {},
+  todoList: null,
+  setTodoList: () => {},
 };
 
 const Web3Context = React.createContext(web3ContextDefault);
@@ -48,6 +54,9 @@ export default function Web3ContextProvider({
   const [networkType, setNetworkType] = useState<string | null>(
     web3ContextDefault.networkType
   );
+  const [todoList, setTodoList] = useState<Contract | null>(
+    web3ContextDefault.todoList
+  );
 
   const loadBlockchainData = async () => {
     if (window.ethereum) {
@@ -65,8 +74,8 @@ export default function Web3ContextProvider({
       setWeb3(_web3);
       setNetworkType(_networkType);
 
-      console.log("Account: " + _account);
-      console.log("Network Type: " + _networkType);
+      const _todoList = new _web3.eth.Contract(TODO_LIST_ABI, TODO_LIST_ADDRESS);
+      setTodoList(_todoList);
     }
   }
 
@@ -87,11 +96,13 @@ export default function Web3ContextProvider({
           setAccounts: setAccounts,
           networkType: networkType,
           setNetworkType: setNetworkType,
+          todoList: todoList,
+          setTodoList: setTodoList,
         }}
       >
         {children}
       </Web3Context.Provider>
     ),
-    [children, web3, account, accounts]
+    [children, web3, account, accounts, networkType, todoList]
   );
 }
