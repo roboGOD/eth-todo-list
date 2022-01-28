@@ -3,8 +3,8 @@ import { useTasksContext } from "../../shared/TasksContext";
 import Task from "../Task/Task";
 
 export default function TasksContainer() {
-  const { tasks } = useTasksContext();
-  const handleTaskCompleted = () => {};
+  const { tasks, toggleCompleted } = useTasksContext();
+
   return (
     <div>
       <ul id="taskList" className="list-unstyled">
@@ -15,7 +15,7 @@ export default function TasksContainer() {
               <Task
                 task={task}
                 key={task.id}
-                handleTaskCompleted={handleTaskCompleted}
+                handleTaskCompleted={toggleCompleted}
               />
             );
           })}
@@ -28,7 +28,7 @@ export default function TasksContainer() {
               <Task
                 task={task}
                 key={task.id}
-                handleTaskCompleted={handleTaskCompleted}
+                handleTaskCompleted={toggleCompleted}
               />
             );
           })}

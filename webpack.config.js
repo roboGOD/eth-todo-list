@@ -12,7 +12,7 @@ module.exports = (env) => {
     devServer: {
       static: './dist',
       port: 3000,
-      open: true,
+      // open: true,
     },
     devtool: isProduction ? undefined : 'eval-source-map',
     plugins: [

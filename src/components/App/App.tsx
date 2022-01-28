@@ -8,7 +8,7 @@ import TasksContainer from "../TasksContainer/TasksContainer";
 import Loader from "../Loader/Loader";
 
 export default function App() {
-  const { taskCount } = useTasksContext();
+  const { createTask } = useTasksContext();
   const { todoList } = useWeb3Context();
   const [loading, setLoading] = useState(true);
 
@@ -31,7 +31,7 @@ export default function App() {
               <Loader />
             ) : (
               <div id="content">
-                <CreateTask handleCreate={() => {}} />
+                <CreateTask handleCreate={createTask} />
                 <TasksContainer />
               </div>
             )}
